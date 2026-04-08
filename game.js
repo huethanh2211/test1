@@ -23,6 +23,9 @@ const scoreEl = document.getElementById('score');
 const timerBar = document.getElementById('timer-bar');
 const timerText = document.getElementById('timer-text');
 const hintCountEl = document.getElementById('hint-count');
+const bestScoreEl = document.getElementById('best-score');
+
+let bestScores = JSON.parse(localStorage.getItem('pikachu_best_scores')) || { 'Easy': 0, 'Premium': 0, 'Hard': 0 };
 
 // Audio Context
 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -270,7 +273,7 @@ function checkPath(r1, c1, r2, c2) {
 
 function processMatch(first, second, path) {
     playSound('match');
-    score += 10;
+    score += 1;
     updateHUD();
     
     // Draw path
@@ -415,7 +418,13 @@ function gameLoop() {
 }
 
 function updateHUD() {
+    if (score > (bestScores[currentLevelName] || 0)) {
+        bestScores[currentLevelName] = score;
+        localStorage.setItem('pikachu_best_scores', JSON.stringify(bestScores));
+    }
+    
     scoreEl.innerText = score;
+    bestScoreEl.innerText = bestScores[currentLevelName] || 0;
     timerText.innerText = timeRemaining + 's';
     timerBar.style.width = Math.max(0, (timeRemaining / 300) * 100) + '%';
     if (timeRemaining <= 30) {
