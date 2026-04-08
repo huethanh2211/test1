@@ -65,12 +65,18 @@ function playSound(type) {
     }
 }
 
-function initGame() {
+let currentLevelName = 'Premium';
+
+function initGame(levelName) {
+    if (levelName) currentLevelName = levelName;
+
     score = 0;
     timeRemaining = 300;
     hintCount = 3;
     selectedTile = null;
     isPlaying = true;
+    
+    document.getElementById('level').innerText = currentLevelName;
     
     updateHUD();
     generateBoard();
@@ -87,8 +93,9 @@ function generateBoard() {
     const numPairs = (GAME_ROWS * GAME_COLS) / 2;
     let iconsToPlace = [];
     
-    // Pick 20 random emojis from the list
-    let selectedEmojis = [...pokemonIds].sort(() => 0.5 - Math.random()).slice(0, 20);
+    // Pick random target count based on level
+    const typesCount = {'Easy': 10, 'Premium': 20, 'Hard': 40}[currentLevelName] || 20;
+    let selectedEmojis = [...pokemonIds].sort(() => 0.5 - Math.random()).slice(0, typesCount);
     
     for (let i = 0; i < numPairs; i++) {
         let index = i % selectedEmojis.length;
@@ -425,9 +432,19 @@ function hideModals() {
 }
 
 // Event Listeners
-document.getElementById('btn-start').addEventListener('click', () => {
+document.getElementById('btn-easy').addEventListener('click', () => {
     hideModals();
-    initGame();
+    initGame('Easy');
+});
+
+document.getElementById('btn-premium').addEventListener('click', () => {
+    hideModals();
+    initGame('Premium');
+});
+
+document.getElementById('btn-hard').addEventListener('click', () => {
+    hideModals();
+    initGame('Hard');
 });
 
 document.getElementById('btn-restart').addEventListener('click', () => {
