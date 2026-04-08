@@ -29,7 +29,6 @@ body {
     justify-content: center;
     align-items: center;
     min-height: 100vh;
-    overflow: hidden;
     user-select: none;
 }
 
@@ -140,13 +139,12 @@ h1, h2, h3 {
     position: relative;
     flex-grow: 1;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    overflow: auto;
 }
 
 #board {
     position: relative;
+    margin: auto;
     display: grid;
     /* Grid template will be set by JS depending on dimensions */
     gap: 4px;
