@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pikachu Connect</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- HUD -->
+        <header id="hud">
+            <div class="hud-item">
+                <span class="hud-label">Score</span>
+                <span id="score">0</span>
+            </div>
+            <div class="hud-item timer-box">
+                <span class="hud-label">Time</span>
+                <div class="progress-bar">
+                    <div id="timer-bar"></div>
+                </div>
+                <span id="timer-text">300s</span>
+            </div>
+            <div class="hud-item">
+                <span class="hud-label">Level</span>
+                <span id="level">1</span>
+            </div>
+            <div class="hud-controls">
+                <button id="btn-shuffle" class="btn" title="Shuffle Board (Cost: 0)">🔀</button>
+                <button id="btn-hint" class="btn" title="Hint (Cost: 50)">💡 <span id="hint-count">3</span></button>
+                <button id="btn-pause" class="btn" title="Pause Game">⏸️</button>
+            </div>
+        </header>
+
+        <!-- Main Play Area -->
+        <main id="play-area">
+            <!-- The grid will be generated here -->
+            <div id="board"></div>
+            
+            <!-- SVG overlay for drawing paths -->
+            <svg id="path-overlay"></svg>
+        </main>
+    </div>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+        <div id="start-modal" class="modal view-active">
+            <h1>Pikachu Connect</h1>
+            <p>Match pairs of identical tiles that can be connected by a line with no more than 2 turns!</p>
+            <button id="btn-start" class="btn primary-btn">Play Now</button>
+        </div>
+
+        <div id="game-over-modal" class="modal">
+            <h1>Time's Up!</h1>
+            <p>Your Final Score: <span id="final-score">0</span></p>
+            <button id="btn-restart" class="btn primary-btn">Try Again</button>
+        </div>
+
+        <div id="level-complete-modal" class="modal">
+            <h1>Level Cleared!</h1>
+            <p>Awesome Job! Bonus points for time left!</p>
+            <button id="btn-next-level" class="btn primary-btn">Next Level</button>
+        </div>
+
+        <div id="pause-modal" class="modal">
+            <h1>Paused</h1>
+            <button id="btn-resume" class="btn primary-btn">Resume</button>
+        </div>
+    </div>
+
+    <!-- Audio (optional, we could use Audio objects in JS instead) -->
+
+    <script src="game.js" charset="utf-8"></script>
+</body>
+</html>
