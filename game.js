@@ -23,7 +23,9 @@ const scoreEl = document.getElementById('score');
 const timerBar = document.getElementById('timer-bar');
 const timerText = document.getElementById('timer-text');
 const hintCountEl = document.getElementById('hint-count');
-const bestScoreEl = document.getElementById('best-score');
+const recordEasyEl = document.getElementById('record-easy');
+const recordPremiumEl = document.getElementById('record-premium');
+const recordHardEl = document.getElementById('record-hard');
 
 let bestScores = JSON.parse(localStorage.getItem('pikachu_best_scores')) || { 'Easy': 0, 'Premium': 0, 'Hard': 0 };
 
@@ -424,7 +426,9 @@ function updateHUD() {
     }
     
     scoreEl.innerText = score;
-    bestScoreEl.innerText = bestScores[currentLevelName] || 0;
+    if (recordEasyEl) recordEasyEl.innerText = bestScores['Easy'] || 0;
+    if (recordPremiumEl) recordPremiumEl.innerText = bestScores['Premium'] || 0;
+    if (recordHardEl) recordHardEl.innerText = bestScores['Hard'] || 0;
     timerText.innerText = timeRemaining + 's';
     timerBar.style.width = Math.max(0, (timeRemaining / 300) * 100) + '%';
     if (timeRemaining <= 30) {

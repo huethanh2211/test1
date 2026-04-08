@@ -9,20 +9,21 @@
 </head>
 <body>
     <div id="game-container">
-        <!-- Banner -->
-        <h2 style="text-align: center; margin-bottom: 15px; font-size: 1.5rem; letter-spacing: 1px;">
+        <!-- Banner & Scoreboard -->
+        <h2 style="text-align: center; margin-bottom: 5px; font-size: 1.5rem; letter-spacing: 1px;">
             Welcome to Childhood Game made by Thanh Tran
         </h2>
+        <div style="display: flex; justify-content: center; gap: 20px; font-family: 'Fredoka One', cursive; margin-bottom: 15px; font-size: 1.2rem;">
+            <div style="color: #52b788; text-shadow: 1px 1px 0 #fff;">Easy: <span id="record-easy">0</span></div>
+            <div style="color: #fb8500; text-shadow: 1px 1px 0 #fff;">Premium: <span id="record-premium">0</span></div>
+            <div style="color: #d90429; text-shadow: 1px 1px 0 #fff;">Hard: <span id="record-hard">0</span></div>
+        </div>
         
         <!-- HUD -->
         <header id="hud">
             <div class="hud-item">
                 <span class="hud-label">Score</span>
                 <span id="score">0</span>
-            </div>
-            <div class="hud-item" style="margin-left: 15px;">
-                <span class="hud-label">Best</span>
-                <span id="best-score">0</span>
             </div>
             <div class="hud-item timer-box">
                 <span class="hud-label">Time</span>
