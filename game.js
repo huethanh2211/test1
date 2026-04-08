@@ -95,7 +95,11 @@ function generateBoard() {
     
     // Pick random target count based on level
     const typesCount = {'Easy': 10, 'Premium': 20, 'Hard': 40}[currentLevelName] || 20;
-    let selectedEmojis = [...pokemonIds].sort(() => 0.5 - Math.random()).slice(0, typesCount);
+
+    // Ensure Pikachu (ID 25) is always in the game
+    const safeIds = pokemonIds.filter(id => id !== 25);
+    let selectedEmojis = [...safeIds].sort(() => 0.5 - Math.random()).slice(0, typesCount - 1);
+    selectedEmojis.push(25);
     
     for (let i = 0; i < numPairs; i++) {
         let index = i % selectedEmojis.length;
@@ -130,13 +134,13 @@ function renderBoard() {
                 tile.classList.add('empty');
             } else {
                 const img = document.createElement('img');
-                img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${board[r][c]}.png`;
+                img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${board[r][c]}.png`;
                 img.draggable = false;
                 img.style.pointerEvents = 'none';
                 img.style.width = '100%';
                 img.style.height = '100%';
                 img.style.objectFit = 'contain';
-                img.style.transform = 'scale(1.6)';
+                img.style.transform = 'scale(1.1)';
                 tile.appendChild(img);
                 tile.addEventListener('click', handleTileClick);
             }
