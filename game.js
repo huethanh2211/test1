@@ -1,4 +1,4 @@
-const emojis = ['🍕','🌭','🍦','🍞','🥛','🥤','🍝','🥗','🍗','🍔','🍟','🍿','🌮','🌯','🍩','🍪','🍮','🎂','🧁','🍯','🍣','🍤','🍜','🥟','🥞','🍉','🍓','🥯','🥨'];
+const pokemonIds = Array.from({length: 151}, (_, i) => i + 1);
 
 const GAME_ROWS = 10;
 const GAME_COLS = 16;
@@ -88,7 +88,7 @@ function generateBoard() {
     let iconsToPlace = [];
     
     // Pick 20 random emojis from the list
-    let selectedEmojis = [...emojis].sort(() => 0.5 - Math.random()).slice(0, 20);
+    let selectedEmojis = [...pokemonIds].sort(() => 0.5 - Math.random()).slice(0, 20);
     
     for (let i = 0; i < numPairs; i++) {
         let index = i % selectedEmojis.length;
@@ -122,7 +122,14 @@ function renderBoard() {
             if (board[r][c] === 0) {
                 tile.classList.add('empty');
             } else {
-                tile.innerText = board[r][c];
+                const img = document.createElement('img');
+                img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${board[r][c]}.png`;
+                img.draggable = false;
+                img.style.pointerEvents = 'none';
+                img.style.width = '90%';
+                img.style.height = '90%';
+                img.style.objectFit = 'contain';
+                tile.appendChild(img);
                 tile.addEventListener('click', handleTileClick);
             }
             
@@ -266,9 +273,9 @@ function processMatch(first, second, path) {
     
     setTimeout(() => {
         first.el.className = 'tile empty';
-        first.el.innerText = '';
+        first.el.innerHTML = '';
         second.el.className = 'tile empty';
-        second.el.innerText = '';
+        second.el.innerHTML = '';
         svgEl.innerHTML = ''; // clear path
         
         checkWinCondition();
