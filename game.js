@@ -133,9 +133,10 @@ function renderBoard() {
                 img.src = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${board[r][c]}.png`;
                 img.draggable = false;
                 img.style.pointerEvents = 'none';
-                img.style.width = '90%';
-                img.style.height = '90%';
+                img.style.width = '100%';
+                img.style.height = '100%';
                 img.style.objectFit = 'contain';
+                img.style.transform = 'scale(1.6)';
                 tile.appendChild(img);
                 tile.addEventListener('click', handleTileClick);
             }
