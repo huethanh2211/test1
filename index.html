@@ -13,10 +13,13 @@
         <h2 style="text-align: center; margin-bottom: 5px; font-size: 1.5rem; letter-spacing: 1px;">
             Welcome to Childhood Game made by Thanh Tran
         </h2>
-        <div style="display: flex; justify-content: center; gap: 20px; font-family: 'Fredoka One', cursive; margin-bottom: 15px; font-size: 1.2rem;">
-            <div style="color: #52b788; text-shadow: 1px 1px 0 #fff;">Easy: <span id="record-easy">0</span></div>
-            <div style="color: #fb8500; text-shadow: 1px 1px 0 #fff;">Premium: <span id="record-premium">0</span></div>
-            <div style="color: #d90429; text-shadow: 1px 1px 0 #fff;">Hard: <span id="record-hard">0</span></div>
+        <div style="display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; font-family: 'Fredoka One', cursive;">
+            <div id="personal-best" style="font-size: 1rem; color: #52b788; margin-bottom: 5px;">Your Best: <span id="my-record">0</span></div>
+            <div style="display: flex; justify-content: center; gap: 20px; font-size: 1.1rem;">
+                <div style="color: #2a9d8f; text-shadow: 1px 1px 0 #fff;">Easy: <span id="record-easy">0</span></div>
+                <div style="color: #fb8500; text-shadow: 1px 1px 0 #fff;">Premium: <span id="record-premium">0</span></div>
+                <div style="color: #d90429; text-shadow: 1px 1px 0 #fff;">Hard: <span id="record-hard">0</span></div>
+            </div>
         </div>
         
         <!-- HUD -->
@@ -58,10 +61,24 @@
         <div id="start-modal" class="modal view-active">
             <h1>Pikachu Connect</h1>
             <p>Match pairs of identical tiles that can be connected by a line with no more than 2 turns!</p>
-            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
-                <button id="btn-easy" class="btn primary-btn" style="background-color: #52b788;">Easy</button>
-                <button id="btn-premium" class="btn primary-btn" style="background-color: #fb8500;">Premium</button>
-                <button id="btn-hard" class="btn primary-btn" style="background-color: #d90429;">Hard</button>
+            
+            <div class="name-input-group" style="margin-bottom: 20px;">
+                <label for="player-name" style="display: block; font-weight: 700; margin-bottom: 8px; color: #023047;">Enter Your Name to Join:</label>
+                <input type="text" id="player-name" placeholder="Guest Player" maxlength="15" style="padding: 12px; border-radius: 12px; border: 2px solid #ffb703; font-family: 'Nunito', sans-serif; font-size: 1rem; width: 80%; text-align: center; outline: none;">
+            </div>
+
+            <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-bottom: 25px;">
+                <button id="btn-easy" class="btn primary-btn" style="background-color: #52b788; font-size: 1.2rem; padding: 12px 24px;">Easy Mode</button>
+                <button id="btn-premium" class="btn primary-btn" style="background-color: #fb8500; font-size: 1.2rem; padding: 12px 24px;">Premium</button>
+                <button id="btn-hard" class="btn primary-btn" style="background-color: #d90429; font-size: 1.2rem; padding: 12px 24px;">Hard Mode</button>
+            </div>
+
+            <div id="leaderboard-container">
+                <h3 style="margin-bottom: 10px; font-size: 1.2rem; color: #fb8500;">🏆 Top Records</h3>
+                <div id="leaderboard-list" style="max-height: 150px; overflow-y: auto; text-align: left; padding: 0 10px;">
+                    <!-- Ranking list will be populated here -->
+                    <p style="text-align: center; color: #888;">No records yet. Be the first!</p>
+                </div>
             </div>
         </div>
 

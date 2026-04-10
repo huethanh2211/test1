@@ -15,6 +15,16 @@ let timeRemaining = 300;
 let timerInterval = null;
 let isPlaying = false;
 let hintCount = 3;
+let currentPlayerName = localStorage.getItem('pikachu_player_name') || '';
+
+// Tier Thresholds
+const TIERS = [
+    { name: 'Diamond', min: 2500, class: 'tier-diamond' },
+    { name: 'Platinum', min: 1500, class: 'tier-platinum' },
+    { name: 'Gold', min: 800, class: 'tier-gold' },
+    { name: 'Silver', min: 300, class: 'tier-silver' },
+    { name: 'Bronze', min: 0, class: 'tier-bronze' }
+];
 
 // DOM Elements
 const boardEl = document.getElementById('board');
@@ -26,8 +36,13 @@ const hintCountEl = document.getElementById('hint-count');
 const recordEasyEl = document.getElementById('record-easy');
 const recordPremiumEl = document.getElementById('record-premium');
 const recordHardEl = document.getElementById('record-hard');
+const myRecordEl = document.getElementById('my-record');
+const leaderboardListEl = document.getElementById('leaderboard-list');
+const playerNameInput = document.getElementById('player-name');
 
 let bestScores = JSON.parse(localStorage.getItem('pikachu_best_scores')) || { 'Easy': 0, 'Premium': 0, 'Hard': 0 };
+let gameHistory = JSON.parse(localStorage.getItem('pikachu_game_history')) || [];
+
 
 // Audio Context
 const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -72,7 +87,62 @@ function playSound(type) {
 
 let currentLevelName = 'Premium';
 
+function getTier(score) {
+    return TIERS.find(t => score >= t.min) || TIERS[TIERS.length - 1];
+}
+
+function updateLeaderboardUI() {
+    if (!leaderboardListEl) return;
+    
+    // Group history by player or just show top scores? 
+    // Let's show top 10 historical scores across all players
+    const topScores = [...gameHistory]
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 10);
+    
+    if (topScores.length === 0) {
+        leaderboardListEl.innerHTML = '<p style="text-align: center; color: #888;">No records yet. Be the first!</p>';
+        return;
+    }
+
+    leaderboardListEl.innerHTML = topScores.map((entry, index) => {
+        const tier = getTier(entry.score);
+        return `
+            <div class="rank-item">
+                <span class="rank-name">${index + 1}. ${entry.name} <span class="rank-tier ${tier.class}">${tier.name}</span></span>
+                <span class="rank-score">${entry.score} pts</span>
+            </div>
+        `;
+    }).join('');
+}
+
+function saveGameResult(finalScore, level) {
+    const entry = {
+        name: currentPlayerName || 'Guest',
+        score: finalScore,
+        level: level,
+        date: new Date().toISOString()
+    };
+    gameHistory.push(entry);
+    localStorage.setItem('pikachu_game_history', JSON.stringify(gameHistory));
+    
+    // Update best scores if necessary
+    if (finalScore > (bestScores[level] || 0)) {
+        bestScores[level] = finalScore;
+        localStorage.setItem('pikachu_best_scores', JSON.stringify(bestScores));
+    }
+    
+    updateLeaderboardUI();
+}
+
 function initGame(levelName) {
+    // Save player name
+    const inputName = playerNameInput.value.trim();
+    if (inputName) {
+        currentPlayerName = inputName;
+        localStorage.setItem('pikachu_player_name', currentPlayerName);
+    }
+    
     if (levelName) currentLevelName = levelName;
 
     score = 0;
@@ -343,6 +413,9 @@ function checkWinCondition() {
         isPlaying = false;
         clearInterval(timerInterval);
         score += timeRemaining * 2; // bonus points
+        
+        saveGameResult(score, currentLevelName);
+        
         setTimeout(() => showModal('level-complete-modal'), 500);
         return;
     }
@@ -415,20 +488,23 @@ function gameLoop() {
         isPlaying = false;
         clearInterval(timerInterval);
         document.getElementById('final-score').innerText = score;
+        
+        saveGameResult(score, currentLevelName);
+        
         showModal('game-over-modal');
     }
 }
 
 function updateHUD() {
-    if (score > (bestScores[currentLevelName] || 0)) {
-        bestScores[currentLevelName] = score;
-        localStorage.setItem('pikachu_best_scores', JSON.stringify(bestScores));
-    }
-    
     scoreEl.innerText = score;
     if (recordEasyEl) recordEasyEl.innerText = bestScores['Easy'] || 0;
     if (recordPremiumEl) recordPremiumEl.innerText = bestScores['Premium'] || 0;
     if (recordHardEl) recordHardEl.innerText = bestScores['Hard'] || 0;
+    
+    // Personal best across all modes
+    const totalBest = Math.max(...Object.values(bestScores), 0);
+    if (myRecordEl) myRecordEl.innerText = totalBest;
+
     timerText.innerText = timeRemaining + 's';
     timerBar.style.width = Math.max(0, (timeRemaining / 300) * 100) + '%';
     if (timeRemaining <= 30) {
@@ -440,6 +516,10 @@ function updateHUD() {
 }
 
 function showModal(id) {
+    if (id === 'start-modal') {
+        if (playerNameInput) playerNameInput.value = currentPlayerName;
+        updateLeaderboardUI();
+    }
     document.getElementById('modal-overlay').classList.add('active');
     document.querySelectorAll('.modal').forEach(m => m.classList.remove('view-active'));
     document.getElementById(id).classList.add('view-active');
@@ -525,6 +605,9 @@ document.getElementById('btn-hint').addEventListener('click', () => {
         }
     }
 });
+
+// Initial HUD update
+updateHUD();
 
 // Show initial modal
 showModal('start-modal');

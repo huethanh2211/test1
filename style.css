@@ -304,9 +304,71 @@ h1, h2, h3 {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* Name Input */
+#player-name:focus {
+    background: #fff9ed;
+    box-shadow: 0 0 10px rgba(255, 183, 3, 0.4);
+}
+
+/* Leaderboard */
+#leaderboard-container {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px dashed #ffb703;
+}
+
+#leaderboard-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+#leaderboard-list::-webkit-scrollbar-thumb {
+    background: #ffb703;
+    border-radius: 10px;
+}
+
+.rank-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    border-bottom: 1px solid #eee;
+    font-size: 0.9rem;
+}
+
+.rank-item:last-child {
+    border-bottom: none;
+}
+
+.rank-name {
+    font-weight: 700;
+    color: #023047;
+}
+
+.rank-score {
+    color: #fb8500;
+    font-weight: 800;
+}
+
+.rank-tier {
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    font-weight: 900;
+    margin-left: 8px;
+}
+
+.tier-bronze { background: #cd7f32; color: white; }
+.tier-silver { background: #c0c0c0; color: #333; }
+.tier-gold { background: #ffd700; color: #333; }
+.tier-platinum { background: #e5e4e2; color: #333; }
+.tier-diamond { background: #b9f2ff; color: #333; text-shadow: 0 0 5px white; }
+
 /* Responsive */
 @media (max-width: 768px) {
     .tile { width: 40px; height: 40px; font-size: 24px; }
     #hud { flex-wrap: wrap; justify-content: center; gap: 10px; }
     .timer-box { width: 100%; order: -1; margin: 0; }
+    .modal { padding: 25px 15px; width: 95%; }
 }
